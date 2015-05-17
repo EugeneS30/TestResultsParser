@@ -7,3 +7,6 @@ Created on 16 May 2015
 class Configuration(object):
     
     buildsDirPath = "C:\\Users\\Polar\\Google Drive"
+    CSVFilePath = "C:\\Users\\Polar\\Google Drive"
+    resultsCSV = "results.csv"
+    resultsCSVTemp = "resultsTemp.csv"

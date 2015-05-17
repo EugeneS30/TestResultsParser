@@ -3,10 +3,14 @@ Created on 15 May 2015
 
 @author: Polar
 '''
-import os
-import json
 
-from conf.conf import Configuration
+import csv
+import json
+import os
+
+
+from conf.Conf import Configuration
+from functional.FileWriter import FileWriter
 
 class Generics(object):
     
@@ -30,3 +34,22 @@ class Generics(object):
                 buildsDirNames.append(directory)
                 
         return buildsDirNames
+    
+    @staticmethod
+    def getCSVReaDer():
+        try:
+            inputFile = open(os.path.join(FileWriter.path, Configuration.resultsCSV), 'rb') #Open existing CSV file 
+        except IOError:
+            inputFile = open(os.path.join(FileWriter.path, Configuration.resultsCSV), 'w+') #Open existing CSV file
+        finally:
+            return csv.reader(inputFile) 
+    
+    @staticmethod
+    def getCSVWriter():
+        try:
+            tempFile = open(os.path.join(FileWriter.path, Configuration.resultsCSVTemp), 'wb') #Open temp CSV file 
+        except IOError:
+            tempFile = open(os.path.join(FileWriter.path, Configuration.resultsCSVTemp), 'w+') #Open temp CSV file
+        finally:
+            return csv.writer(tempFile)
+            
