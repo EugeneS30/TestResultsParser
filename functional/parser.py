@@ -8,7 +8,7 @@ import json
 from pprint import pprint
 
 from containers import FeatureFile
-from generics.Generics import Generics
+#from generics.Generics import Generics
 
 class Parser(object):
     

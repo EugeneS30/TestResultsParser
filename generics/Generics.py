@@ -8,9 +8,7 @@ import csv
 import json
 import os
 
-
 from conf.Conf import Configuration
-from functional.FileWriter import FileWriter
 
 class Generics(object):
     

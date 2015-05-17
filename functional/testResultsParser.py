@@ -5,10 +5,10 @@ Created on 15 May 2015
 '''
 import os
 
-from generics.Generics import Generics
 from conf.Conf import Configuration
-from functional.Parser import Parser
-from functional.FileWriter import FileWriter
+from Parser import Parser
+from FileWriter import FileWriter
+from generics.Generics import Generics
 
 #iterate over cucumber reports in their respective locations
 for build in Generics.getDirsList(): 
@@ -20,3 +20,4 @@ for build in Generics.getDirsList():
     for featureFileObject in parsedData:
         #FileWriter.writeObject(featureFileObject)
         print featureFileObject.getName()
+        print featureFileObject.getElementNames()
