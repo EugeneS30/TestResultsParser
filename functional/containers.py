@@ -19,6 +19,7 @@ class FeatureFile(object):
         for element in elements:
             self.featureFileElementsObjects.append(FeatureFileElement(element))
 
+    """
     def getElementsAsObjects(self):
         return self.featureFileElementsObjects
     
@@ -28,7 +29,15 @@ class FeatureFile(object):
             returnList += object.__str__()
             
         return returnList
-
+    """
+    def getElementNames(self):
+        elementNames = []
+        
+        for featureFileElementObject in self.featureFileElementsObjects:
+            elementNames.append(featureFileElementObject.getName())
+            
+        return elementNames
+    
     def getName(self):
         return self.name
 

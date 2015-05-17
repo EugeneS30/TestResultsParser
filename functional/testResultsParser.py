@@ -18,4 +18,5 @@ for build in Generics.getDirsList():
     parsedData = parser.parse(jsonData) #Returns list of FeatureFile objects 
     
     for featureFileObject in parsedData:
-        FileWriter.writeObject(featureFileObject)
+        #FileWriter.writeObject(featureFileObject)
+        print featureFileObject.getName()

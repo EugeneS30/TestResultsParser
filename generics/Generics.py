@@ -52,4 +52,3 @@ class Generics(object):
             tempFile = open(os.path.join(FileWriter.path, Configuration.resultsCSVTemp), 'w+') #Open temp CSV file
         finally:
             return csv.writer(tempFile)
-            
