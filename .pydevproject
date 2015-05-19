@@ -9,9 +9,10 @@
 <pydev_property name="org.python.pydev.PYTHON_PROJECT_VERSION">python 2.7</pydev_property>
 <pydev_property name="org.python.pydev.PYTHON_PROJECT_INTERPRETER">Default</pydev_property>
 <pydev_pathproperty name="org.python.pydev.PROJECT_EXTERNAL_SOURCE_PATH">
-<path>C:\workspace\Projects\TestResultsParser\conf</path>
-<path>C:\workspace\Projects\TestResultsParser\functional</path>
-<path>C:\workspace\Projects\TestResultsParser</path>
-<path>C:\workspace\Projects\TestResultsParser\generics</path>
+<path>C:\workspace\connect\TestResultsParser</path>
+<path>C:\workspace\connect\TestResultsParser\conf</path>
+<path>C:\workspace\connect\TestResultsParser\functional</path>
+<path>C:\workspace\connect\TestResultsParser\generics</path>
+<path>C:\workspace\connect\TestResultsParser\test</path>
 </pydev_pathproperty>
 </pydev_project>

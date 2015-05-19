@@ -4,9 +4,6 @@ Created on 15 May 2015
 @author: Polar
 '''
 
-import json
-from pprint import pprint
-
 from containers import FeatureFile
 #from generics.Generics import Generics
 
@@ -16,12 +13,12 @@ class Parser(object):
     def parse(jsonData):
         
         featureFileObjects = []                
-        elementKeysExpected = [u'elements', u'name', u'keyword', u'tags', u'uri', u'line', u'id', u'description']
-        
+                
         ## Create feature file objects
         
         #Iterate over list elements
         for featureFile in jsonData:
+                
             featureFileElements = []
             keys = []
             values = []
@@ -41,12 +38,24 @@ class Parser(object):
             
             #Store feature file as FeatureFile class in featureFileObjects list   
             featureFileObjects.append(FeatureFile(*featureFileElements))
-            
-            return featureFileObjects
+
+        return featureFileObjects
     
     @staticmethod
     def printParsedData(featureFileObjects):
         for feature in featureFileObjects:
             print feature
             
+    @staticmethod
+    def generateBuildResults(parsedData):
+        uniqueScenarioObjects = []
+        buildResultData = []
     
+        for featureFile in parsedData: #Iterate over 
+            uniqueScenarioObjects.append(featureFile.generateUniqueScenarios())        
+        
+        for uniqueScenarioList in uniqueScenarioObjects:
+            for uniqueScenario in uniqueScenarioList:
+                buildResultData.append(uniqueScenario)
+                
+        return buildResultData

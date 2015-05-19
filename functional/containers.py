@@ -6,30 +6,19 @@ Created on 16 May 2015
 
 class FeatureFile(object):
     
-    def __init__(self, elements, name, keyword, tags, uri, line, id, description):
-        self.featureFileElementsObjects = []
+    def __init__(self, elements, name, keyword, tags, uri, line, ID, description):
+        self.featureFileElementsObjects = [] #List of Scenarios in single .feature file
         self.name = name
         self.keyword = keyword
         self.tags = tags
         self.uri = uri
         self.line = line
-        self.id = id
+        self.ID = ID
         self.description = description
         
         for element in elements:
             self.featureFileElementsObjects.append(FeatureFileElement(element))
 
-    """
-    def getElementsAsObjects(self):
-        return self.featureFileElementsObjects
-    
-    def getElementsAsStrings(self):
-        returnList = "" 
-        for object in self.featureFileElementsObjects:
-            returnList += object.__str__()
-            
-        return returnList
-    """
     def getElementNames(self):
         elementNames = []
         
@@ -37,6 +26,22 @@ class FeatureFile(object):
             elementNames.append(featureFileElementObject.getName())
             
         return elementNames
+    
+    def getElementsReferences(self):
+        elementReferences = []
+        
+        for featureFileElementObject in self.featureFileElementsObjects:
+            elementReferences.append(featureFileElementObject)
+            
+        return elementReferences
+    
+    def generateUniqueScenarios(self):
+        uniqueScenariosList = []
+        
+        for featureFileElementsObject in self.featureFileElementsObjects:
+            uniqueScenariosList.append(UniqueScenario(self.uri, featureFileElementsObject.getName(), featureFileElementsObject.failedStepsExist()))
+            
+        return uniqueScenariosList
     
     def getName(self):
         return self.name
@@ -59,10 +64,9 @@ class FeatureFile(object):
         for featureFileElement in self.featureFileElementsObjects:
             returnString += featureFileElement.__str__() + "\n"
         
-        
         return returnString
     
-    
+
 class FeatureFileElement(object):
     
     def __init__(self, elements):
@@ -83,7 +87,14 @@ class FeatureFileElement(object):
         for step in self.steps:
             returnString += step.__str__() 
         
-        return returnString 
+        return returnString
+    
+    def failedStepsExist(self):
+        for step in self.steps:
+            if step.getResult() == "failed":
+                return True
+            
+        return False 
     
     def getName(self):
         return self.name
@@ -92,12 +103,13 @@ class FeatureFileElement(object):
         return self.steps
     
     def getStepsAsString(self):
-        str = ""
+        returnString = ""
         for step in self.steps:
-            str += step.__str__()
+            returnString += step.__str__()
             
-        return str + "\n"
+        return returnString + "\n"
     
+
 class Step(object):
     
     def __init__(self, name, result):
@@ -114,3 +126,14 @@ class Step(object):
         returnString = ""
         returnString += "Step name: " + self.name + " - " + self.result.get("status") + "\n"
         return returnString
+    
+
+class UniqueScenario(object):
+    
+    def __init__(self, uri, elementName, result):
+        self.uri = uri
+        self.elementName = elementName
+        self.result = result
+        
+    def __str__(self):
+        return str(self.uri) + "," + str(self.elementName) + "," + str(self.result)
