@@ -3,16 +3,16 @@ Created on 15 May 2015
 
 @author: Eugene Shragovich
 '''
-import os
+#import os
 
 from conf.Conf import Configuration
 from functional.parser import Parser
-from FileWriter import FileWriter
+#from FileWriter import FileWriter
 from generics.Generics import Generics
 from generics.Logger import logging
 
 
-resultsPerBuild = {} # {buildNumber, [UniqueScenario, ...]}
+resultsAllBuilds = {} # {buildNumber, [UniqueScenario, ...]}
 
 #iterate over cucumber reports in their respective locations
 for build in Generics.getDirsList():
@@ -38,33 +38,29 @@ for build in Generics.getDirsList():
     buildResults = Parser.generateBuildResults(parsedData) #Returns a list of UniqueSceario objects 
     logging.info("Build results generated")
     
-    resultsPerBuild[build] = buildResults #add (build, UniqueScearios list) pair to dictionary
-        
-    #logging.info("Going to write build results to file")
-    #fileWriter = FileWriter()
-    
-    #fileWriter.init()
-    #fileWriter.writeBuildResults(buildResults, build)
+    resultsAllBuilds[build] = buildResults #add (build, UniqueScearios list) pair to dictionary
 
-lst1 = []
-for build, resultsString in resultsPerBuild.iteritems():
+
+buildNameResultMap = [] # [buildNumber, uniqueName, result]
+for build, resultsString in resultsAllBuilds.iteritems():
     for result in resultsString:
-        lst1.append((build, result.getUniqueName(), result.getResult()))
+        buildNameResultMap.append((build, result.getUniqueName(), result.getResult()))
 
-allScenarios = []
-for record in lst1:
-    allScenarios.append(record[1])
-    
-uniqueList = list(set(allScenarios))
+uniqueScenariosList = list(set(record[1] for record in buildNameResultMap))
 
-finalDict = {}
-
-for item in uniqueList:
-    finalDict[item] = []
+finalResultDict = {}
+for item in uniqueScenariosList:
+    finalResultDict[item] = []
    
-for build, results in resultsPerBuild.iteritems():
+for build, results in resultsAllBuilds.iteritems():
     for result in results:
-        finalDict[result.getUniqueName()].append((build, result.getResult()))
+        finalResultDict[result.getUniqueName()].append((build, result.getResult()))
 
-for key, value in finalDict.iteritems():
+for key, value in finalResultDict.iteritems():
     print key, value
+    
+#logging.info("Going to write build results to file")
+#fileWriter = FileWriter()
+   
+#fileWriter.init()
+#fileWriter.writeBuildResults(buildResults, build)
