@@ -12,9 +12,16 @@ from generics.Generics import Generics
 from generics.Logger import logging
 
 
+resultsPerBuild = {}
 #iterate over cucumber reports in their respective locations
 for build in Generics.getDirsList():
-    #print Generics.buildPath(Configuration.buildsDirPath, build, "htmlreports\Functional_Test_Report", "cucumber.json")
+    
+    
+    # !!!
+    # Below line must be removed or commeted out before actual run!!!
+    if build != "387":
+        continue
+       
     logging.info("Parsing BUILD: %s", build)
     logging.info("========================")
     
@@ -25,13 +32,38 @@ for build in Generics.getDirsList():
     parsedData = parser.parse(jsonData) #Returns list of FeatureFile objects
     logging.info("JSON data parsing complete")
     
-    buildResults = parser.generateBuildResults(parsedData)
+    buildResults = parser.generateBuildResults(parsedData) #Returns a list of UniqueSceario objects 
     logging.info("Build results generated")
     
-    logging.info("Going to write build results to file")
-    fileWriter = FileWriter()
+    resultsPerBuild[build] = buildResults #add (build, UniqueScearios list) pair to dictionary
+        
+    #logging.info("Going to write build results to file")
+    #fileWriter = FileWriter()
     
-    fileWriter.init()
-    fileWriter.writeBuildResults(buildResults, build)
+    #fileWriter.init()
+    #fileWriter.writeBuildResults(buildResults, build)
+
+
+lst1 = []
+for build, resultsString in resultsPerBuild.iteritems():
+    for result in resultsString:
+        lst1.append((build, result.getUniqueName(), result.getResult()))
+
+allScenarios = []
+for record in lst1:
+    allScenarios.append(record[1])
     
-    exit(0)
+uniqueList = list(set(allScenarios))
+
+finalDict = {}
+
+for item in uniqueList:
+    finalDict[item] = []
+   
+for build, results in resultsPerBuild.iteritems():
+    for result in results:
+        
+        finalDict[result.getUniqueName()].append((build, result.getResult()))
+
+for key, value in finalDict.iteritems():
+    print key, value

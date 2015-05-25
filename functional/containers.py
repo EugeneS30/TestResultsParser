@@ -16,6 +16,7 @@ class FeatureFile(object):
         self.ID = ID
         self.description = description
         
+        
         for element in elements:
             self.featureFileElementsObjects.append(FeatureFileElement(element))
 
@@ -39,7 +40,9 @@ class FeatureFile(object):
         uniqueScenariosList = []
         
         for featureFileElementsObject in self.featureFileElementsObjects:
-            uniqueScenariosList.append(UniqueScenario(self.uri, featureFileElementsObject.getName(), featureFileElementsObject.failedStepsExist()))
+            if featureFileElementsObject.getType() == "background":
+                continue
+            uniqueScenariosList.append(UniqueScenario(self.uri, featureFileElementsObject.getName(), featureFileElementsObject.getType(), featureFileElementsObject.failedStepsExist()))
             
         return uniqueScenariosList
     
@@ -72,17 +75,20 @@ class FeatureFileElement(object):
     def __init__(self, elements):
         
         self.name = ""
+        self.type = ""
         self.steps = []
         
         for key, value in elements.iteritems():
             if key == "name":
                 self.name = value
+            if key == "type":
+                self.type = value
             if key == "steps":
                 for step in value:
                     self.steps.append(Step(step.get("name"), step.get("result")))
                     
     def __str__(self):
-        returnString = "Element name: " + self.name + "\n"
+        returnString = "Element name: " + self.name + " " + self.type + "\n"
         
         for step in self.steps:
             returnString += step.__str__() 
@@ -98,6 +104,9 @@ class FeatureFileElement(object):
     
     def getName(self):
         return self.name
+    
+    def getType(self):
+        return self.type
     
     def getStepsAsObjects(self):
         return self.steps
@@ -130,10 +139,27 @@ class Step(object):
 
 class UniqueScenario(object):
     
-    def __init__(self, uri, elementName, result):
+    def __init__(self, uri, elementName, elementType, result):
         self.uri = uri
         self.elementName = elementName
+        self.elementType = elementType
         self.result = result
+        self.uniqueName = self.getURI() + "," + self.getName() + "," + self.getType()
+        
+    def getURI(self):
+        return self.uri
+    
+    def getResult(self):
+        return self.result
+    
+    def getName(self):
+        return self.elementName
+    
+    def getType(self):
+        return self.elementType
+    
+    def getUniqueName(self):
+        return self.uniqueName
         
     def __str__(self):
-        return str(self.uri) + "," + str(self.elementName) + "," + str(self.result)
+        return str(self.uri) + "," + str(self.elementName) + "," + str(self.getType) + "," + str(self.result)
