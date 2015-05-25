@@ -12,27 +12,30 @@ from generics.Generics import Generics
 from generics.Logger import logging
 
 
-resultsPerBuild = {}
+resultsPerBuild = {} # {buildNumber, [UniqueScenario, ...]}
+
 #iterate over cucumber reports in their respective locations
 for build in Generics.getDirsList():
     
-    
     # !!!
     # Below line must be removed or commeted out before actual run!!!
-    if build != "387":
-        continue
+#     if build != "387":
+#         continue
        
-    logging.info("Parsing BUILD: %s", build)
     logging.info("========================")
-    
+    logging.info("Parsing BUILD: %s", build)
+        
     jsonData = Generics.loadJsonData(Generics.buildPath(Configuration.buildsDirPath, build, "htmlreports\Functional_Test_Report", "cucumber.json"))
     logging.info("JSON Data loaded...")
     
-    parser = Parser()
-    parsedData = parser.parse(jsonData) #Returns list of FeatureFile objects
-    logging.info("JSON data parsing complete")
+    try:
+        parsedData = Parser.parse(jsonData) #Returns list of FeatureFile objects
+        logging.info("JSON data parsing complete")
+    except TypeError:
+        logging.error("Could not load the file. Skipping to next build...")
+        continue
     
-    buildResults = parser.generateBuildResults(parsedData) #Returns a list of UniqueSceario objects 
+    buildResults = Parser.generateBuildResults(parsedData) #Returns a list of UniqueSceario objects 
     logging.info("Build results generated")
     
     resultsPerBuild[build] = buildResults #add (build, UniqueScearios list) pair to dictionary
@@ -42,7 +45,6 @@ for build in Generics.getDirsList():
     
     #fileWriter.init()
     #fileWriter.writeBuildResults(buildResults, build)
-
 
 lst1 = []
 for build, resultsString in resultsPerBuild.iteritems():
@@ -62,7 +64,6 @@ for item in uniqueList:
    
 for build, results in resultsPerBuild.iteritems():
     for result in results:
-        
         finalDict[result.getUniqueName()].append((build, result.getResult()))
 
 for key, value in finalDict.iteritems():
