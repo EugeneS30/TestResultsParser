@@ -9,6 +9,8 @@ import json
 import os
 
 from conf.Conf import Configuration
+from generics.Logger import logging
+from types import NoneType
 
 class Generics(object):
     
@@ -18,8 +20,15 @@ class Generics(object):
     
     @staticmethod
     def loadJsonData(path):
-        with open(path) as json_file:
-            return json.load(json_file)
+        """ Load JSON data from file
+    
+        """
+        try:
+            with open(path) as json_file:
+                return json.load(json_file)
+        except IOError:
+            logging.error("Invalid file %s", path)
+            return NoneType
         
     @staticmethod
     def getDirsList():
