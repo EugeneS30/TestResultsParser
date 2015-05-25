@@ -11,6 +11,10 @@ class Parser(object):
     
     @staticmethod
     def parse(jsonData):
+        """Parse the JSON data
+        
+        returns a list of featureFileObjects
+        """  
         
         featureFileObjects = []                
                 
@@ -48,6 +52,10 @@ class Parser(object):
             
     @staticmethod
     def generateBuildResults(parsedData):
+        """ Generates a list of unique results for build
+        
+        returns a list of UniqueScenario objects
+        """
         uniqueScenarioObjects = []
         buildResultData = []
     
