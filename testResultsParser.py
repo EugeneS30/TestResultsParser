@@ -92,7 +92,4 @@ for key, values in finalResultDict.iteritems(): # {featureFile+scenario: (build,
 
     rowToStartFrom += 1
 
-logging.info("Writing complete!")
-
 wb.saveFile()
-logging.info("File saved")
