@@ -3,16 +3,12 @@ Created on 15 May 2015
 
 @author: Eugene Shragovich
 '''
-#import os
-import sys
-from datetime import *
 
 from conf.Conf import Configuration
 from functional.parser import Parser
 from functional.ExcelWriter import ExcelWriter
 from generics.Generics import Generics
 from generics.Logger import logging
-from __builtin__ import str
 
 builds = []
 resultsAllBuilds = {} # {buildNumber, [UniqueScenario, ...]}
@@ -60,6 +56,9 @@ for build, results in resultsAllBuilds.iteritems():
     for result in results:
         finalResultDict[result.getUniqueName()].append((build, result.getResult()))
 
+logging.info("=-=-=-=-=-=-=-=-=-=-=-=-=-=")
+logging.info("=-=-=-=-=-=-=-=-=-=-=-=-=-=")
+logging.info("Going to write results to file...")
 wb = ExcelWriter("TestResults")
 wb.writeLine("Filename", 0, 0, "heading")
 wb.writeLine("Scenario", 0, 1, "heading")
@@ -70,60 +69,30 @@ for build in reversed(builds):
     startBuildsFromCol += 1
 
 rowToStartFrom = 1
-for key, values in finalResultDict.iteritems():
+for key, values in finalResultDict.iteritems(): # {featureFile+scenario: (build, bool), (build, bool)}
     splitString = key.split(",") #Split the key,value string by ","
     wb.writeLine(splitString[0], rowToStartFrom, 0) # write feature file name
     wb.writeLine(splitString[1], rowToStartFrom, 1) # write scenario name
-    
-        
+
     colToStartFrom = 2
     for build in reversed(builds):
+        logging.debug("processing build %s", build)
         for value in values:
+            logging.debug("value: %s", value)
+            buildFound = False
             if value[0] == build:
+                logging.debug("build found!")
+                buildFound = True
+                logging.debug("writing row: %s column: %s", rowToStartFrom, colToStartFrom)
                 wb.writeLine(str(value[1]), rowToStartFrom, colToStartFrom)
                 colToStartFrom += 1
+                break
+        if buildFound == False:
+            colToStartFrom += 1
 
     rowToStartFrom += 1
-    
 
+logging.info("Writing complete!")
 
-    
 wb.saveFile()
-exit(0)
-
-
-
-
-"""
-csvSeparator = ","
-
-sys.stdout.write("Filename")
-sys.stdout.write(csvSeparator)
-sys.stdout.write("scenario")
-sys.stdout.write(csvSeparator)
-
-
-for build in reversed(builds):
-    sys.stdout.write(build)
-    sys.stdout.write(csvSeparator)
-  
-print
-
-for key, values in finalResultDict.iteritems():
-    sys.stdout.write(key)
-    sys.stdout.write(csvSeparator)
-    
-    for build in reversed(builds):
-        for value in values:
-            if value[0] == build:
-                sys.stdout.write("" + str(value[1]))
-                #print value[1]
-        sys.stdout.write(csvSeparator)
-    print
-"""
-
-#logging.info("Going to write build results to file")
-#fileWriter = FileWriter()
-   
-#fileWriter.init()
-#fileWriter.writeBuildResults(buildResults, build)
+logging.info("File saved")
