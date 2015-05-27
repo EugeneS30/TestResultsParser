@@ -11,5 +11,5 @@ class Configuration(object):
     CSVFilePath = "C:\\Temp"
     resultsCSV = "results.csv"
     resultsCSVTemp = "resultsTemp.csv"
-    
+    startBuildNumber = 389
     
