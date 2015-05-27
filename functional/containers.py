@@ -98,9 +98,9 @@ class FeatureFileElement(object):
     def failedStepsExist(self):
         for step in self.steps:
             if step.getResult() == "failed":
-                return True
+                return False
             
-        return False 
+        return True
     
     def getName(self):
         return self.name
@@ -144,7 +144,7 @@ class UniqueScenario(object):
         self.elementName = elementName
         self.elementType = elementType
         self.result = result
-        self.uniqueName = self.getURI() + "," + self.getName() + "," + self.getType()
+        self.uniqueName = self.getURI() + "," + self.getName()# + "," + self.getType()
         
     def getURI(self):
         return self.uri
