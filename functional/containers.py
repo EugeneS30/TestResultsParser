@@ -97,8 +97,11 @@ class FeatureFileElement(object):
     
     def failedStepsExist(self):
         for step in self.steps:
-            if step.getResult() == "failed":
+            result = step.getResult()
+            if result == "failed":
                 return False
+            elif result == "skipped":
+                return "N/A"
             
         return True
     
