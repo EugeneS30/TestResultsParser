@@ -27,7 +27,8 @@ class ExcelWriter(object):
         
     def saveFile(self, fileName="TestResults"):
         try:
-            self.workbook.save(fileName + datetime.now().strftime("_%d-%m-%y") + ".xls")
+            #self.workbook.save(fileName + datetime.now().strftime("_%d-%m-%y") + ".xls")
+            self.workbook.save(fileName + ".xls")
             logging.info("File saved")
         except IOError:
             logging.error("Cannot save file!")
