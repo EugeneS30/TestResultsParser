@@ -100,11 +100,13 @@ class FeatureFileElement(object):
             result = step.getResult()
             if result == "failed":
                 return False
+            if result == "passed":
+                return True
             elif result == "skipped":
                 return "N/A"
-            
-        return True
-    
+            else:
+                return result
+
     def getName(self):
         return self.name
     
