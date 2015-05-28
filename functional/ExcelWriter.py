@@ -41,5 +41,3 @@ class ExcelWriter(object):
         self.worksheet.write(2, 0, 1)
         self.worksheet.write(2, 1, 1)
         self.worksheet.write(2, 2, xlwt.Formula("A3+B3"))
-
-         

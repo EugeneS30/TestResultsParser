@@ -1,7 +1,7 @@
 '''
 Created on 17 May 2015
 
-@author: Polar
+@author: Eugene Shragovich
 '''
 import os
 import csv
