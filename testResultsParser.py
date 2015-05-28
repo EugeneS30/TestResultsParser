@@ -19,7 +19,7 @@ for build in Generics.getDirsList():
     logging.debug("Processing build: %s", build)
     
     if int(build) < Configuration.startBuildNumber:
-        logging.debug("Skipping build: %s", build)
+        logging.info("Skipping build: %s", build)
         continue
     
     builds.append(build) #Creating a builds list
