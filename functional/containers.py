@@ -96,17 +96,23 @@ class FeatureFileElement(object):
         return returnString
     
     def failedStepsExist(self):
+        """ Returns scenario result
+        
+        Iterates over scenario steps and checks results of each step
+        If "skipped" comes as a first step, the whole scenario will be marked as N/A
+        In other cases, the scenario will be marked:
+        "True"  - for passed
+        "False" - for failed  
+        """ 
         for step in self.steps:
             result = step.getResult()
+            if result == "skipped":
+                return "N/A"
             if result == "failed":
                 return False
-            if result == "passed":
-                return True
-            elif result == "skipped":
-                return "N/A"
-            else:
-                return result
 
+        return True
+        
     def getName(self):
         return self.name
     
