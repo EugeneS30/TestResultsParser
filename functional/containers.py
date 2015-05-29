@@ -108,8 +108,6 @@ class FeatureFileElement(object):
             result = step.getResult()
             if result == "pending":
                 return "pending"
-            if result == "skipped":
-                return "N/A"
             if result == "failed":
                 return False
 
